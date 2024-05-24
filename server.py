@@ -1,7 +1,9 @@
+import logging
 import subprocess
 
 # Define the command to run
-command = "neo4j-admin server console"
+# command = "neo4j-admin server console"
+command = "neo4j start"
 
 # Run the command
 process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -9,17 +11,13 @@ process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=s
 # Get the output and error (if any)
 output, error = process.communicate()
 
-# Print the output and error
-print("Output:", output.decode())
-print("Error:", error.decode())
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Log the output and error
+logging.info("Output: %s", output.decode())
+logging.error("Error: %s", error.decode())
 
-# from fabric import Config, Connection
-# from fabric.tasks import execute
-# from fabfile import start_neo4j
-
-# # Establish connection
-# conn = Connection('your_host')
-
-# # Execute the command
-# execute(start_neo4j, conn)
+# Check the return code
+if process.returncode != 0:
+    logging.error(f"Error: Command '{command}' failed with return code {process.returncode}")
