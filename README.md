@@ -1,4 +1,4 @@
-![image](https://github.com/CognitiveModel/KG/assets/163852631/6574c470-b8aa-4ae0-9905-2e2158df8f30)## Dependencies installation:
+## Dependencies installation:
 
 - run pip install -r requirements.txt
 
