@@ -2,16 +2,23 @@ from langchain_community.graphs import Neo4jGraph
 from langchain_community.vectorstores import Neo4jVector
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
+import os
+from dotenv import load_dotenv
 # from sentence_transformers import SentenceTransformer
 # model = SentenceTransformer("all-MiniLM-L6-v2")
 
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 
-username="neo4j"
-password="password"
-url = "bolt://localhost:7687"
-database = "newmanash"
-index_name = "edge-embedding"
+
+load_dotenv()
+
+groq_api=os.environ.get("GROQ_API_KEY")
+username=os.environ.get("NEO4J_USER")
+password=os.environ.get("NEO4J_PASSWORD")
+url = os.environ.get("NEO4J_URL")
+database = os.environ.get("NEO4J_DATABASE")
+edge_index_name = "edge-embedding"
+model_name = "mixtral-8x7b-32768"
 
 graph = Neo4jGraph(url=url, username=username, password=password)
 
@@ -53,7 +60,7 @@ edge_kg = Neo4jVector.from_existing_relationship_index(
         username=username,
         password=password,
         database=database,  # neo4j by default
-        index_name=index_name,  # vector by default
+        index_name=edge_index_name,  # vector by default
         # text_node_property="content",  # text by default
         retrieval_query="""
             WITH relationship as doc, score
@@ -113,7 +120,7 @@ print('\n\n')
 # print(kg.index_name)
 
 
-llm = ChatGroq(temperature=0, groq_api_key="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" , model_name="mixtral-8x7b-32768")
+llm = ChatGroq(temperature=0, groq_api_key=groq_api , model_name=model_name)
 
 system = "Give very accurate answer based on the given context. Don't make up answer if you don't know it."
 human = ("Answer the following question based on the following context:\n Question: {query}\n context:"
