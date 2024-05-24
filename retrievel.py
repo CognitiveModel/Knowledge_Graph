@@ -28,7 +28,7 @@ print(graph.schema)
 embeddings = SentenceTransformerEmbeddings(
             model_name="all-MiniLM-L6-v2"
         )
-query="Manash Kumar has how much family income?"
+query=input("\nWrite down your question:")
 # top_k = 3
 # index_name = "edge-embedding"
 # query_embedding = embeddings.embed_query(query)
